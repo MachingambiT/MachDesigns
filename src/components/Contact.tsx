@@ -4,14 +4,29 @@ import { MapPin, Phone, Mail, CheckCircle, MessageSquare } from "lucide-react";
 
 export default function Contact() {
   const [formStatus, setFormStatus] = useState<"idle" | "submitting" | "success">("idle");
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    service: "Essential Package ($80)",
+    details: ""
+  });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setFormStatus("submitting");
+    
+    // Construct email subject and body
+    const subject = encodeURIComponent(`New Consultation Request from ${formData.name}`);
+    const body = encodeURIComponent(`Name: ${formData.name}\nEmail: ${formData.email}\nService: ${formData.service}\n\nProject Details:\n${formData.details}`);
+    
+    // Open default email client
+    window.location.href = `mailto:tatendm12@gmail.com?subject=${subject}&body=${body}`;
+
     setTimeout(() => {
       setFormStatus("success");
+      setFormData({ name: "", email: "", service: "Essential Package ($80)", details: "" });
       setTimeout(() => setFormStatus("idle"), 3000);
-    }, 1500);
+    }, 500);
   };
 
   return (
@@ -32,6 +47,9 @@ export default function Contact() {
                   <label className="text-sm font-medium text-zinc-600">Full Name</label>
                   <input 
                     type="text" 
+                    required
+                    value={formData.name}
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     className="w-full px-4 py-3 rounded-xl bg-white border border-zinc-200 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 text-zinc-900 outline-none transition-all shadow-sm"
                     placeholder="Tendai Moyo"
                   />
@@ -40,6 +58,9 @@ export default function Contact() {
                   <label className="text-sm font-medium text-zinc-600">Email Address</label>
                   <input 
                     type="email" 
+                    required
+                    value={formData.email}
+                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                     className="w-full px-4 py-3 rounded-xl bg-white border border-zinc-200 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 text-zinc-900 outline-none transition-all shadow-sm"
                     placeholder="tendai@example.com"
                   />
@@ -48,7 +69,11 @@ export default function Contact() {
               
               <div className="space-y-2">
                 <label className="text-sm font-medium text-zinc-600">Service of Interest</label>
-                <select className="w-full px-4 py-3 rounded-xl bg-white border border-zinc-200 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 text-zinc-900 outline-none transition-all appearance-none shadow-sm">
+                <select 
+                  value={formData.service}
+                  onChange={(e) => setFormData({ ...formData, service: e.target.value })}
+                  className="w-full px-4 py-3 rounded-xl bg-white border border-zinc-200 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 text-zinc-900 outline-none transition-all appearance-none shadow-sm"
+                >
                   <option>Essential Package ($80)</option>
                   <option>Professional Package ($120)</option>
                   <option>Enterprise Package ($300+)</option>
@@ -60,6 +85,9 @@ export default function Contact() {
                 <label className="text-sm font-medium text-zinc-600">Project Details</label>
                 <textarea 
                   rows={4}
+                  required
+                  value={formData.details}
+                  onChange={(e) => setFormData({ ...formData, details: e.target.value })}
                   className="w-full px-4 py-3 rounded-xl bg-white border border-zinc-200 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 text-zinc-900 outline-none transition-all resize-none shadow-sm"
                   placeholder="Tell me a bit about your goals..."
                 ></textarea>
