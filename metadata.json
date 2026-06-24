@@ -1,0 +1,6 @@
+{
+  "name": "Web Designer Portfolio",
+  "description": "A premium minimalist portfolio and service marketing website for a web designer, featuring a booking system and AI-powered text-to-speech intro.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
